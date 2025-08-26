@@ -13,6 +13,8 @@ public class StepDefATM {
     Bank bank;
     boolean validLogin;
 
+    BankAccount bankAccount;
+
     @Before
     public void init() {
         bank = new Bank("KU Bank");
@@ -68,6 +70,22 @@ public class StepDefATM {
     public void customer_id_account_balance_is(int id, double balance) {
         assertEquals(balance,
                      bank.getCustomer(id).getAccount().getBalance());
+    }
+
+
+    @Given("I have a bank account with balance {int}")
+    public void i_have_a_bank_account_with_balance(int oldBalance) {
+        bankAccount = new BankAccount(oldBalance);
+    }
+
+    @When("I deposit {int}")
+    public void i_deposit(int amount) {
+        bankAccount.deposit(amount);
+    }
+
+    @Then("my account balance should be {int}")
+    public void my_account_balance_should_be(int expectedBalance) {
+        assertEquals(expectedBalance, bankAccount.getBalance());
     }
 
 }
